@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card mb-2">
     <div class="card-header">
         <a href="#">{{ $reply->owner->name }}</a>
         said
