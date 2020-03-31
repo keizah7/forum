@@ -1,9 +1,9 @@
 <?php
 
-use App\Reply;
+use App\User;
 use Illuminate\Database\Seeder;
 
-class ReplySeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +12,6 @@ class ReplySeeder extends Seeder
      */
     public function run()
     {
-        factory(Reply::class, rand(0, 10))->create();
+        factory(User::class, rand(1, 10))->create();
     }
 }
