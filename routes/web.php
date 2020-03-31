@@ -12,22 +12,19 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
-
+Route::get('/', fn () => view('welcome'));
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => 'threads'], function () {
-    Route::get('', 'ThreadController@index');
-    Route::post('', 'ThreadController@store')
-        ->middleware('auth');
-    Route::get('{thread}', 'ThreadController@show');
-    Route::post('{thread}/replies', 'ReplyController@store')
-        ->middleware('auth')
-        ->name('reply.store');
+  Route::name('threads.')->group(function () {
+      $methodsArray = ['index', 'show'];
+      $parameters = ['' => 'thread'];
+      $resource = ['', 'ThreadController'];
+
+      Route::resource(...$resource)->parameters($parameters)->except($methodsArray)->middleware('auth');
+      Route::resource(...$resource)->parameters($parameters)->only($methodsArray);
+  });
+  Route::post('{thread}/replies', 'ReplyController@store')->name('replies.store')->middleware('auth');
 });
 

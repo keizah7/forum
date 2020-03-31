@@ -41,7 +41,7 @@
                             to participate
                         </p>
                     @else
-                        <form action="{{ route('reply.store', $thread) }}" method="post">
+                        <form action="{{ route('replies.store', $thread) }}" method="post">
                             @csrf
 
                             <textarea name="body"

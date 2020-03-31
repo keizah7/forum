@@ -10,10 +10,15 @@ class CreateThreadsTest extends TestCase
     /** @test */
     public function guest_cant_create_a_thread()
     {
-        $this
-            ->post('threads')
-            ->assertRedirect('login');
+        $this->post('threads')->assertRedirect('login');
     }
+
+    /** @test */
+    public function guest_cant_see_thread_create_form()
+    {
+        $this->get('threads/create')->assertRedirect('login');
+    }
+
 
     /** @test */
     public function a_authenticated_user_can_create_a_thread()
