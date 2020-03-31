@@ -41,7 +41,7 @@
                             to participate
                         </p>
                     @else
-                        <form action="{{ route('replies.store', $thread) }}" method="post">
+                        <form action="{{ route('replies.store', [$thread->channel->id, $thread->id]) }}" method="post">
                             @csrf
 
                             <textarea name="body"

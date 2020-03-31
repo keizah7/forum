@@ -18,13 +18,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => 'threads'], function () {
   Route::name('threads.')->group(function () {
-      $methodsArray = ['index', 'show'];
-      $parameters = ['' => 'thread'];
-      $resource = ['', 'ThreadController'];
-
-      Route::resource(...$resource)->parameters($parameters)->except($methodsArray)->middleware('auth');
-      Route::resource(...$resource)->parameters($parameters)->only($methodsArray);
+      Route::resource('', 'ThreadController')->parameters(['' => 'thread'])->except(['index', 'show'])->middleware('auth');
+      Route::get('', 'ThreadController@index')->name('index');
+      Route::get('{channel}/{thread}', 'ThreadController@show')->name('show');
   });
-  Route::post('{thread}/replies', 'ReplyController@store')->name('replies.store')->middleware('auth');
+  Route::post('{channel}/{thread}/replies', 'ReplyController@store')->name('replies.store')->middleware('auth');
 });
-
