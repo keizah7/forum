@@ -21,5 +21,13 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('threads', 'ThreadController');
-Route::post('threads/{thread}/replies', 'ReplyController@store')->middleware('auth')->name('reply.store');
+Route::group(['prefix' => 'threads'], function () {
+    Route::get('', 'ThreadController@index');
+    Route::post('', 'ThreadController@store')
+        ->middleware('auth');
+    Route::get('{thread}', 'ThreadController@show');
+    Route::post('{thread}/replies', 'ReplyController@store')
+        ->middleware('auth')
+        ->name('reply.store');
+});
+

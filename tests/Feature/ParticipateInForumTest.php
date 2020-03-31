@@ -27,11 +27,11 @@ class ParticipateInForumTest extends TestCase
         $this->signIn();
         $thread = factory(Thread::class)->create();
 
-        $reply = factory(Reply::class)->make();
+        $reply = factory(Reply::class)->raw();
         $this
             ->followingRedirects()
-            ->post($thread->path() . '/replies', $reply->toArray())
-            ->assertSee($reply->body);
+            ->post($thread->path() . '/replies', $reply)
+            ->assertSee($reply['body']);
     }
 
 }
