@@ -6,7 +6,6 @@ use App\Reply;
 use App\Thread;
 use App\User;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ThreadTest extends TestCase
@@ -17,7 +16,7 @@ class ThreadTest extends TestCase
     {
         parent::setUp();
 
-        $this->thread = factory(Thread::class)->create();
+        $this->thread = create(Thread::class);
     }
 
 
@@ -30,7 +29,7 @@ class ThreadTest extends TestCase
     /** @test */
     public function has_a_replies()
     {
-        $reply = factory(Reply::class)->create(['thread_id' => $this->thread]);
+        $reply = create(Reply::class, ['thread_id' => $this->thread]);
 
         $this->assertInstanceOf(Collection::class, $this->thread->replies);
         $this->assertCount(1, $this->thread->replies);
@@ -45,7 +44,7 @@ class ThreadTest extends TestCase
     /** @test */
     public function can_add_a_reply()
     {
-        $this->thread->addReply(factory(Reply::class)->make()->toArray());
+        $this->thread->addReply(make(Reply::class)->toArray());
 
         $this->assertCount(1, $this->thread->replies);
     }

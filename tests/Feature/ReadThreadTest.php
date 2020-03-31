@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Reply;
 use App\Thread;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ReadThreadTest extends TestCase
@@ -15,7 +14,7 @@ class ReadThreadTest extends TestCase
     {
         parent::setUp();
 
-        $this->thread = factory(Thread::class)->create();
+        $this->thread = create(Thread::class);
     }
 
     /** @test */
@@ -38,7 +37,7 @@ class ReadThreadTest extends TestCase
     /** @test */
     public function a_user_can_read_thread_replies()
     {
-        $reply = factory(Reply::class)->create(['thread_id' => $this->thread->id]);
+        $reply = create(Reply::class, ['thread_id' => $this->thread->id]);
 
         $this
             ->get($this->thread->path())

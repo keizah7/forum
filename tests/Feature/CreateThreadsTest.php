@@ -3,8 +3,6 @@
 namespace Tests\Feature;
 
 use App\Thread;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class CreateThreadsTest extends TestCase
@@ -13,7 +11,7 @@ class CreateThreadsTest extends TestCase
     public function guest_cant_create_a_thread()
     {
         $this
-            ->post('threads', factory(Thread::class)->raw())
+            ->post('threads')
             ->assertRedirect('login');
     }
 
@@ -22,7 +20,7 @@ class CreateThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $thread = factory(Thread::class)->make();
+        $thread = make(Thread::class);
 
         $this
             ->followingRedirects()

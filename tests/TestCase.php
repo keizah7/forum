@@ -11,9 +11,8 @@ abstract class TestCase extends BaseTestCase
     use CreatesApplication;
     use RefreshDatabase;
 
-
-    public function signIn($user = null)
+    protected function signIn($user = null)
     {
-        $this->actingAs($user ?? factory(User::class)->create());
+        return tap($this)->actingAs($user ?? create(User::class));
     }
 }
