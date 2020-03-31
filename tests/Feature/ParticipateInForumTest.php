@@ -29,4 +29,14 @@ class ParticipateInForumTest extends TestCase
             ->assertSee($reply->body);
     }
 
+    /** @test */
+    public function a_reply_requires_a_body()
+    {
+        $this->publishReply(['body' => null])->assertSessionHasErrors('body');
+    }
+
+    private function publishReply($attributes = null)
+    {
+        return $this->signIn()->post(create(Thread::class)->path().'/replies', make(Reply::class, $attributes)->toArray());
+    }
 }
