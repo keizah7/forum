@@ -4,30 +4,51 @@ namespace Tests\Unit;
 
 use App\Reply;
 use App\Thread;
+use App\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ThreadTest extends TestCase
 {
-    use RefreshDatabase;
+    private $thread;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->thread = factory(Thread::class)->create();
+    }
+
 
     /** @test */
     public function has_a_path()
     {
-        $thread = factory(Thread::class)->create();
-
-        $this->assertEquals('threads/' . $thread->id, $thread->path());
+        $this->assertEquals('threads/' . $this->thread->id, $this->thread->path());
     }
 
     /** @test */
     public function has_a_replies()
     {
-        $thread = factory(Thread::class)->create();
-        $reply = factory(Reply::class)->create(['thread_id' => $thread]);
+        $reply = factory(Reply::class)->create(['thread_id' => $this->thread]);
 
-        $this->assertInstanceOf(Collection::class, $thread->replies);
-        $this->assertCount(1, $thread->replies);
+        $this->assertInstanceOf(Collection::class, $this->thread->replies);
+        $this->assertCount(1, $this->thread->replies);
     }
+
+    /** @test */
+    public function has_a_creator()
+    {
+        $this->assertInstanceOf(User::class, $this->thread->creator);
+    }
+
+    /** @test */
+    public function can_add_a_reply()
+    {
+        $this->thread->addReply(factory(Reply::class)->make()->toArray());
+
+        $this->assertCount(1, $this->thread->replies);
+    }
+
 
 }

@@ -9,8 +9,6 @@ use Tests\TestCase;
 
 class ReplyTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
     public function has_an_owner()
     {
