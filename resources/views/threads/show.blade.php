@@ -15,5 +15,28 @@
                 </div>
             </div>
         </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card-header">Replies</div>
+                @forelse($thread->replies as $reply)
+                    <div class="card">
+                        <div class="card-header">
+                            <a href="#">{{ $reply->owner->name }}</a>
+                            said
+                            {{ $reply->created_at->diffForHumans() }}
+                        </div>
+
+                        <div class="card-body">
+                            <article>
+                                <p>{{ $reply->body }}</p>
+                            </article>
+                        </div>
+                    </div>
+                @empty
+                    Replies list is empty
+                @endforelse
+            </div>
+        </div>
     </div>
 @endsection
