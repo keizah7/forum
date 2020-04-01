@@ -2,12 +2,10 @@
 
 @section('content')
     <div class="container">
-        <div class="row justify-content-center mb-3">
+        <div class="row">
             <div class="col-md-8">
-                <div class="card">
+                <div class="card mb-3">
                     <div class="card-header">
-                        <a href="#">{{ $thread->creator->name }}</a>
-                        posted:
                         {{ $thread->title }}
                     </div>
 
@@ -15,47 +13,45 @@
                         <article>
                             <p>{{ $thread->body }}</p>
                         </article>
+
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card-header">Replies</div>
-                @forelse($thread->replies as $reply)
+                @forelse($replies as $reply)
                     @include('threads.reply')
                 @empty
                     Replies list is empty
                 @endforelse
+                {{ $replies->links() }}
+
+                @guest
+                    <p class="text-center pt-3">
+                        Please
+                        <a href="{{ route('login') }}">sign in</a>
+                        to participate
+                    </p>
+                @else
+                    <form action="{{ route('replies.store', [$thread->channel->id, $thread->id]) }}" method="post">
+                        @csrf
+
+                        <textarea name="body"
+                                  id="body"
+                                  cols="30"
+                                  rows="5"
+                                  class="form-control"
+                                  placeholder="Say something?"></textarea>
+                        <button type="submit">Send</button>
+                    </form>
+                @endguest
             </div>
-        </div>
-
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    @guest
-                        <p class="text-center pt-3">
-                            Please
-                            <a href="{{ route('login') }}">sign in</a>
-                            to participate
-                        </p>
-                    @else
-                        <form action="{{ route('replies.store', [$thread->channel->id, $thread->id]) }}" method="post">
-                            @csrf
-
-                            <textarea name="body"
-                                      id="body"
-                                      cols="30"
-                                      rows="5"
-                                      class="form-control"
-                                      placeholder="Say something?"></textarea>
-                            <button type="submit">Send</button>
-                        </form>
-                    @endguest
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        Published {{ $thread->created_at->diffForHumans() }} by
+                        <a href="#">{{ $thread->creator->name }}</a>
+                        , and has {{ $thread->replies_count }} {{ Str::plural('reply', $thread->replies_count) }}
+                    </div>
                 </div>
             </div>
         </div>
-
     </div>
 @endsection
