@@ -18,6 +18,15 @@
 
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <style>
+            .level {
+                display: flex;
+                align-items: center;
+            }
+            .flex {
+                flex: 1;
+            }
+        </style>
     </head>
     <body>
         <div id="app">
@@ -53,6 +62,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('threads.index') }}">Threads</a>
+                                    <a class="dropdown-item" href="{{ route('threads.index', ['popularity' => 1]) }}">Most popular Threads</a>
                                     @auth
                                         <a class="dropdown-item"
                                            href="{{ route('threads.index', ['by' => auth()->user()->name]) }}">My Threads
