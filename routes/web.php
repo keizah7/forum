@@ -25,3 +25,5 @@ Route::group(['prefix' => 'threads'], function () {
   Route::post('{channel}/{thread}/replies', 'ReplyController@store')->name('replies.store')->middleware('auth');
   Route::get('{channel}', 'ThreadController@index');
 });
+
+Route::post('replies/{reply}/favorites', 'FavoriteController@store')->middleware('auth');

@@ -76,9 +76,9 @@ class ReadThreadTest extends TestCase
     public function a_user_can_view_most_popular_threads_by_replies_count()
     {
         $thread2 = create(Thread::class);
-        create(Reply::class, ['thread_id' => $thread2->id, 'created_at' => new Carbon('-5 minute')], 2);
+        create(Reply::class, ['thread_id' => $thread2->id], 2);
         $thread3 = create(Thread::class);
-        create(Reply::class, ['thread_id' => $thread3->id, 'created_at' => new Carbon('-1 minute')], 3);
+        create(Reply::class, ['thread_id' => $thread3->id], 3);
 
         $response = $this->getJson('threads?popularity=1')->json();
 
