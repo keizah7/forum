@@ -10,8 +10,8 @@
                     <div class="card-body">
                         @forelse($threads as $thread)
                             <article>
-                                <div class="level">
-                                    <h4 class="flex">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h4 class="mb-0">
                                         <a href="{{ $thread->path() }}">{{ $thread->title }}</a>
                                     </h4>
 
