@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Channel;
 use App\Reply;
 use App\Thread;
+use App\User;
 use Tests\TestCase;
 
 class ReadThreadTest extends TestCase
@@ -53,6 +54,19 @@ class ReadThreadTest extends TestCase
 
         $this->get('threads/' . $channel->slug)
             ->assertSee($thread->title)
+            ->assertDontSee($this->thread->title);
+    }
+
+    /** @test */
+    public function a_user_can_view_threads_by_any_username()
+    {
+        $me = create(User::class, ['name' => 'me']);
+        $myThread = create(Thread::class, ['user_id' => $me->id]);
+
+        $this
+            ->signIn($me)
+            ->get('threads?by=me')
+            ->assertSee($myThread->title)
             ->assertDontSee($this->thread->title);
     }
 
