@@ -8,7 +8,8 @@
         <div>
             <form action="{{ route('favorite.store', $reply) }}" method="post">
                 @csrf
-                <button class="form-control" type="submit" {{ $reply->isFavorited() ? 'disabled' : '' }}>{{ $reply->favorites()->count(). ' '. Str::plural('like', $reply->favorites()->count()) }}</button>
+                <button class="form-control"
+                        type="submit" {{ $reply->isFavorited() ? 'disabled' : '' }}>{{ $reply->favorites_count. ' '. Str::plural('like', $reply->favorites_count) }}</button>
             </form>
         </div>
     </div>
