@@ -5,8 +5,13 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="card mb-3">
-                    <div class="card-header">
+                    <div class="card-header d-flex justify-content-between items-center">
                         {{ $thread->title }}
+                        <form action="/threads/{{ $thread->id }}" method="post">
+                            @csrf
+                            @method('delete')
+                            <button class="btn btn-danger" type="submit">Delete</button>
+                        </form>
                     </div>
 
                     <div class="card-body">
@@ -47,7 +52,7 @@
                 <div class="card mb-3">
                     <div class="card-body">
                         Published {{ $thread->created_at->diffForHumans() }} by
-                        <a href="{{ route('user.profile', $thread->creator->name) }}">{{ $thread->creator->name }}</a>
+                        <a href="{{ route('user.profile', $thread->creator) }}">{{ $thread->creator->name }}</a>
                         , and has {{ $thread->replies_count }} {{ Str::plural('reply', $thread->replies_count) }}
                     </div>
                 </div>
