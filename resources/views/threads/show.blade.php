@@ -47,7 +47,7 @@
                 <div class="card mb-3">
                     <div class="card-body">
                         Published {{ $thread->created_at->diffForHumans() }} by
-                        <a href="#">{{ $thread->creator->name }}</a>
+                        <a href="{{ route('user.profile', $thread->creator->name) }}">{{ $thread->creator->name }}</a>
                         , and has {{ $thread->replies_count }} {{ Str::plural('reply', $thread->replies_count) }}
                     </div>
                 </div>
