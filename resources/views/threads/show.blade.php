@@ -7,11 +7,13 @@
                 <div class="card mb-3">
                     <div class="card-header d-flex justify-content-between items-center">
                         {{ $thread->title }}
-                        <form action="/threads/{{ $thread->id }}" method="post">
-                            @csrf
-                            @method('delete')
-                            <button class="btn btn-danger" type="submit">Delete</button>
-                        </form>
+                        @can('update', $thread)
+                            <form action="/threads/{{ $thread->id }}" method="post">
+                                @csrf
+                                @method('delete')
+                                <button class="btn btn-danger" type="submit">Delete</button>
+                            </form>
+                        @endcan
                     </div>
 
                     <div class="card-body">

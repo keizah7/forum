@@ -23,7 +23,7 @@ class ThreadTest extends TestCase
     /** @test */
     public function has_a_path()
     {
-        $this->assertEquals( "threads/{$this->thread->channel->slug}/{$this->thread->id}", $this->thread->path());
+        $this->assertEquals( "/threads/{$this->thread->channel->slug}/{$this->thread->id}", $this->thread->path());
     }
 
 
