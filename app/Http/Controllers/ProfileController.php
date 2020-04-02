@@ -48,7 +48,7 @@ class ProfileController extends Controller
     {
         return view('profiles.show', [
             'user' => $user,
-            'threads' => $user->threads()->paginate(5),
+            'activities' => $this->getActivities($user),
         ]);
     }
 
@@ -84,5 +84,16 @@ class ProfileController extends Controller
     public function destroy(User $user)
     {
         //
+    }
+
+    /**
+     * @param User $user
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    private function getActivities(User $user): \Illuminate\Database\Eloquent\Collection
+    {
+        return $user->activity()->latest()->with('subject')->take(50)->get()->groupBy(function ($activity) {
+            return $activity->created_at->format('Y-m-d');
+        });
     }
 }

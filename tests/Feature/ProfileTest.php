@@ -24,7 +24,7 @@ class ProfileTest extends TestCase
     /** @test */
     public function profile_display_user_threads()
     {
-        $user = create(User::class);
+        $this->signIn($user = create(User::class));
         $thread = create(Thread::class, ['user_id' => $user]);
 
         $this->get('profiles/' . $user->name)
