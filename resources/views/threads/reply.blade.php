@@ -1,4 +1,4 @@
-<div class="card mb-2">
+<div id="reply-{{ $reply->id }}" class="card mb-2">
     <div class="card-header d-flex justify-content-between align-items-center">
         <div>
             <a href="{{ route('user.profile', $reply->owner) }}">{{ $reply->owner->name }}</a>
