@@ -4,9 +4,19 @@ namespace App;
 
 trait Favorable
 {
+    /**
+     * Boot the trait.
+     */
+    protected static function bootFavoritable()
+    {
+        static::deleting(function ($model) {
+            $model->favorites->each->delete();
+        });
+    }
+
     public function isFavorited()
     {
-        return $this->favorites->where('user_id', auth()->id())->count();
+        return !! $this->favorites->where('user_id', auth()->id())->count();
     }
 
     public function getFavoritesCountAttribute()
@@ -34,7 +44,7 @@ trait Favorable
     {
         $attributes = ['user_id' => auth()->id()];
 
-        $this->favorites()->where($attributes)->delete();
+        $this->favorites()->where($attributes)->get()->each->delete();
     }
 
     /**

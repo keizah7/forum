@@ -6,9 +6,11 @@
                 said
                 {{ $reply->created_at->diffForHumans() }}
             </div>
-            <div>
-                <favorite :reply="{{ $reply }}"></favorite>
-            </div>
+            @auth
+                <div>
+                    <favorite :reply="{{ $reply }}"></favorite>
+                </div>
+            @endauth
         </div>
 
         <div class="card-body">
