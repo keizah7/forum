@@ -28,3 +28,4 @@ Route::group(['prefix' => 'threads'], function () {
 
 Route::post('replies/{reply}/favorites', 'FavoriteController@store')->name('favorite.store')->middleware('auth');
 Route::get('profiles/{user}', 'ProfileController@show')->name('user.profile');
+Route::delete('replies/{reply}', 'ReplyController@destroy')->middleware('auth');
