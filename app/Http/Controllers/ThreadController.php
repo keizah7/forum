@@ -40,7 +40,7 @@ class ThreadController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(Request $request)
     {
@@ -57,7 +57,7 @@ class ThreadController extends Controller
             'body' => $request->body,
         ]);
 
-        return redirect($thread->path());
+        return redirect($thread->path())->with('flash', 'Your thread has been published');
     }
 
     /**

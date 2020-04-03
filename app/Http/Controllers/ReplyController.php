@@ -33,7 +33,7 @@ class ReplyController extends Controller
      *
      * @param Thread $thread
      * @param \Illuminate\Http\Request $request
-     * @return void
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store($channelId, Thread $thread, Request $request)
     {
@@ -46,7 +46,7 @@ class ReplyController extends Controller
             'body' => $request->body,
         ]);
 
-        return redirect($thread->path());
+        return redirect($thread->path())->with('flash', 'Your reply has been left');
     }
 
     /**
