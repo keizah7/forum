@@ -23,11 +23,21 @@
                 display: flex;
                 align-items: center;
             }
+
             .flex {
                 flex: 1;
             }
-            [v-cloak] { display: none; }
+
+            [v-cloak] {
+                display: none;
+            }
         </style>
+        <script>
+            window.app = {!! json_encode([
+                'signedIn' => auth()->check(),
+                'user' => auth()->user(),
+            ]) !!}
+        </script>
     </head>
     <body>
         <div id="app">
