@@ -45,7 +45,10 @@ class ThreadTest extends TestCase
     /** @test */
     public function can_add_a_reply()
     {
-        $this->thread->addReply(make(Reply::class)->toArray());
+        $this->thread->addReply([
+            'user_id' => 1,
+            'body' => 'reply',
+        ]);
 
         $this->assertCount(1, $this->thread->replies);
     }

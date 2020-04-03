@@ -26,7 +26,9 @@ Route::group(['prefix' => 'threads'], function () {
   Route::get('{channel}', 'ThreadController@index');
 });
 
-Route::post('replies/{reply}/favorites', 'FavoriteController@store')->name('favorite.store')->middleware('auth');
+Route::post('replies/{reply}/favorites', 'FavoriteController@store')->middleware('auth');
+Route::delete('replies/{reply}/favorites', 'FavoriteController@destroy')->middleware('auth');
+
 Route::get('profiles/{user}', 'ProfileController@show')->name('user.profile');
 Route::delete('replies/{reply}', 'ReplyController@destroy')->middleware('auth');
 Route::patch('replies/{reply}', 'ReplyController@update')->middleware('auth');

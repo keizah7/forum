@@ -37,8 +37,6 @@ class FavoriteController extends Controller
     public function store(Reply $reply)
     {
         $reply->favorite();
-
-        return back();
     }
 
     /**
@@ -81,8 +79,8 @@ class FavoriteController extends Controller
      * @param \App\Favorite $favorite
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Favorite $favorite)
+    public function destroy(Reply $reply)
     {
-        //
+        $reply->unfavorite();
     }
 }
