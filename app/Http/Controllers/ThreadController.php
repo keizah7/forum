@@ -108,6 +108,7 @@ class ThreadController extends Controller
     {
         $this->authorize('update', $thread);
 
+        $thread->replies->each->delete();
         $thread->delete();
 
         return redirect('threads');
