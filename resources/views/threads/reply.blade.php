@@ -32,12 +32,7 @@
             <div class="d-flex">
                 @can('update', $reply)
                     <button class="btn btn-sm btn-success mr-1" @click="editing = true">Edit</button>
-
-                    <form action="/replies/{{ $reply->id }}" method="post">
-                        @csrf
-                        @method('delete')
-                        <button class="btn btn-danger btn-sm" type="submit">Delete</button>
-                    </form>
+                    <button class="btn btn-danger btn-sm" @click="destroy">Delete</button>
                 @endcan
             </div>
 
