@@ -22,6 +22,7 @@ Route::group(['prefix' => 'threads'], function () {
       Route::get('', 'ThreadController@index')->name('index');
       Route::get('{channel}/{thread}', 'ThreadController@show')->name('show');
   });
+  Route::get('{channel}/{thread}/replies', 'ReplyController@index');
   Route::post('{channel}/{thread}/replies', 'ReplyController@store')->name('replies.store')->middleware('auth');
   Route::get('{channel}', 'ThreadController@index');
 });
