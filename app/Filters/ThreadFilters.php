@@ -6,7 +6,7 @@ use App\User;
 
 class ThreadFilters extends Filters
 {
-    protected array $filters = ['by', 'popularity'];
+    protected array $filters = ['by', 'popularity', 'unanswered'];
 
     /**
      * @param string $userName
@@ -23,5 +23,15 @@ class ThreadFilters extends Filters
     {
 //        $this->builder->getQuery()->orders = [];
         return $this->builder->orderBy('replies_count', 'desc');
+    }
+
+    /**
+     * Filter the query according to those that are unanswered.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function unanswered()
+    {
+        return $this->builder->where('replies_count', 0);
     }
 }

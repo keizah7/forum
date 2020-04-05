@@ -31,6 +31,7 @@
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ route('threads.index') }}">Threads</a>
                         <a class="dropdown-item" href="{{ route('threads.index', ['popularity' => 1]) }}">Most popular Threads</a>
+                        <a class="dropdown-item" href="/threads?unanswered=1">Unanswered Threads</a>
                         @auth
                             <a class="dropdown-item"
                                href="{{ route('threads.index', ['by' => auth()->user()->name]) }}">My Threads

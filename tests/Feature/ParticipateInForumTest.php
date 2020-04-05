@@ -23,10 +23,10 @@ class ParticipateInForumTest extends TestCase
         $thread = create(Thread::class);
         $reply = make(Reply::class);
 
-        $this
-            ->followingRedirects()
-            ->post($thread->path() . '/replies', $reply->toArray())
-            ->assertSee($reply->body);
+        $this->post($thread->path() . '/replies', $reply->toArray());
+
+        $this->assertDatabaseHas('replies', $reply->only('body'));
+        $this->assertEquals(1, $thread->fresh()->replies_count);
     }
 
     /** @test */
