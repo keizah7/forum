@@ -34,6 +34,11 @@ Route::group(['prefix' => 'threads'], function () {
 Route::post('replies/{reply}/favorites', 'FavoriteController@store')->middleware('auth');
 Route::delete('replies/{reply}/favorites', 'FavoriteController@destroy')->middleware('auth');
 
-Route::get('profiles/{user}', 'ProfileController@show')->name('user.profile');
+Route::group(['prefix' => 'profiles/{user}'], function () {
+    Route::get('', 'ProfileController@show')->name('user.profile');
+    Route::get('notifications', 'UserNotificationController@index');
+    Route::delete('/notifications/{notification}', 'UserNotificationController@destroy')->middleware('auth');
+});
+
 Route::delete('replies/{reply}', 'ReplyController@destroy')->middleware('auth');
 Route::patch('replies/{reply}', 'ReplyController@update')->middleware('auth');
