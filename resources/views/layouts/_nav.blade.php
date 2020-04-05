@@ -77,6 +77,7 @@
                         </li>
                     @endif
                 @else
+                    <user-notifications></user-notifications>
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown"
                            class="nav-link dropdown-toggle"
