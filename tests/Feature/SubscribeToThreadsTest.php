@@ -18,10 +18,24 @@ class SubscribeToThreadsTest extends TestCase
         $this->post($thread->path() . '/subscriptions');
 
         $thread->addReply([
-            'user_id' => auth()->id,
+            'user_id' => auth()->id(),
             'body' => 'new',
         ]);
 
         $this->assertCount(1, $thread->subscriptions);
+    }
+
+    /** @test */
+    public function a_user_can_unsubscribe_from_threads()
+    {
+        $this->signIn();
+
+        $thread = create(Thread::class);
+
+        $thread->subscribe();
+
+        $this->delete($thread->path() . '/subscriptions');
+
+        $this->assertCount(0, $thread->subscriptions);
     }
 }
