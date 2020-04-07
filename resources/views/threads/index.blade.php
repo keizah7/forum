@@ -9,7 +9,19 @@
                         <div class="card-header">
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <h4 class="mb-0">
-                                    <a href="{{ $thread->path() }}">{{ $thread->title }}</a>
+                                    <a href="{{ $thread->path() }}">
+                                        @guest
+                                            {{ $thread->title }}
+                                        @else
+                                            @if ($thread->hasUpdatesFor(auth()->user()))
+                                                <strong>
+                                                    {{ $thread->title }}
+                                                </strong>
+                                            @else
+                                                {{ $thread->title }}
+                                            @endif
+                                        @endguest
+                                    </a>
                                 </h4>
 
                                 <a href="{{ $thread->path() }}">{{ $thread->replies_count }} {{ Str::plural('reply', $thread->replies_count) }}</a>

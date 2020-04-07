@@ -133,4 +133,17 @@ class Thread extends Model
             ->each
             ->notify($reply);
     }
+
+    /**
+     * Determine if the thread has been updated since the user last read it.
+     *
+     * @param  User $user
+     * @return bool
+     */
+    public function hasUpdatesFor($user)
+    {
+        $key = $user->visitedThreadCacheKey($this);
+
+        return $this->updated_at > cache($key);
+    }
 }
