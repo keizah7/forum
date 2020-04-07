@@ -9,8 +9,9 @@ class Spam
      *
      * @var array
      */
-    protected $keywords = [
-        'yahoo customer support'
+    protected $inspections = [
+        InvalidKeywords::class,
+        KeyHeldDown::class
     ];
 
     /**
@@ -21,10 +22,8 @@ class Spam
      */
     public function detect($body)
     {
-        foreach ($this->keywords as $keyword) {
-            if (stripos($body, $keyword) !== false) {
-                throw new \Exception('Your reply contains spam.');
-            }
+        foreach ($this->inspections as $inspection) {
+            app($inspection)->detect($body);
         }
 
         return false;
