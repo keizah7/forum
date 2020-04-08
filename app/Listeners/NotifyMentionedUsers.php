@@ -2,11 +2,14 @@
 
 namespace App\Listeners;
 
-use App\Providers\ThreadHasNewReply;
+use App\Events\ThreadReceivedNewReply;
+use App\Notifications\YouWereMentioned;
+use App\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Notification;
 
-class NotifyThreadSubscibers
+class NotifyMentionedUsers
 {
     /**
      * Create the event listener.
@@ -21,11 +24,11 @@ class NotifyThreadSubscibers
     /**
      * Handle the event.
      *
-     * @param  ThreadHasNewReply  $event
+     * @param  ThreadReceivedNewReply  $event
      * @return void
      */
-    public function handle(ThreadHasNewReply $event)
+    public function handle(ThreadReceivedNewReply $event)
     {
-        $event->thread->notifySubscribers($event->reply);
+        $event->reply->notifyMentionedUsers();
     }
 }

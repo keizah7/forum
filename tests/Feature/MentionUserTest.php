@@ -12,6 +12,7 @@ class MentionUserTest extends TestCase
     /** @test */
     function mentioned_users_in_a_reply_are_notified()
     {
+        $this->withoutExceptionHandling();
         $john = create(User::class, ['name' => 'JohnDoe']);
 
         $this->signIn($john);

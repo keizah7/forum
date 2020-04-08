@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Events\ThreadHasNewReply;
+use App\Events\ThreadReceivedNewReply;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -80,9 +80,7 @@ class Thread extends Model
     {
         $reply = $this->replies()->create($reply);
 
-        event(new ThreadHasNewReply($this, $reply));
-
-        $this->notifySubscribers($reply);
+        event(new ThreadReceivedNewReply($this, $reply));
 
         return $reply;
     }
@@ -137,8 +135,9 @@ class Thread extends Model
     /**
      * Determine if the thread has been updated since the user last read it.
      *
-     * @param  User $user
+     * @param User $user
      * @return bool
+     * @throws \Exception
      */
     public function hasUpdatesFor($user)
     {
