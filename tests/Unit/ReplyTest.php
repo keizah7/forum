@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Favorite;
 use App\Reply;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Tests\TestCase;
 
@@ -25,4 +26,15 @@ class ReplyTest extends TestCase
         $this->assertTrue($reply->favorites->contains($favorite));
     }
 
+    /** @test */
+    function it_knows_if_it_was_just_published()
+    {
+        $reply = create(Reply::class);
+
+        $this->assertTrue($reply->wasJustPublished());
+
+        $reply->created_at = Carbon::now()->subMonth();
+
+        $this->assertFalse($reply->wasJustPublished());
+    }
 }

@@ -29,11 +29,12 @@ class ParticipateInForumTest extends TestCase
         $this->assertEquals(1, $thread->fresh()->replies_count);
     }
 
-    /** @test */
-    public function a_reply_requires_a_body()
-    {
-        $this->publishReply(['body' => null])->assertSessionHasErrors('body');
-    }
+//    /** @test */
+//    public function a_reply_requires_a_body()
+//    {
+//        $this->publishReply(['body' => 'null'])
+//            ->assertSessionHasErrors('body');
+//    }
 
     private function publishReply($attributes = null)
     {
@@ -100,7 +101,22 @@ class ParticipateInForumTest extends TestCase
         $reply = make(Reply::class, [
             'body' => 'Yahoo Customer Support'
         ]);
-        $this->expectException(\Exception::class);
-        $this->post($thread->path() . '/replies', $reply->toArray());
+        $this->post($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(422);
+    }
+
+    /** @test */
+    function users_may_only_reply_a_maximum_of_once_per_minute()
+    {
+        $this->signIn();
+
+        $thread = create(Thread::class);
+        $reply = make(Reply::class);
+
+        $this->post($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(201);
+
+        $this->post($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(429);
     }
 }

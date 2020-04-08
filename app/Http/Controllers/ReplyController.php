@@ -8,6 +8,7 @@ use App\Rules\SpamFree;
 use App\Thread;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ReplyController extends Controller
 {
@@ -36,22 +37,31 @@ class ReplyController extends Controller
      *
      * @param $channelId
      * @param Thread $thread
+     * @param Request $request
      * @return array|ResponseFactory|\Illuminate\Database\Eloquent\Model|\Illuminate\Http\Response
      */
-    public function store($channelId, Thread $thread)
+    public function store($channelId, Thread $thread, Request $request)
     {
-        try {
-            $this->validate(request(), ['body' => ['required', new SpamFree]]);
+        if (Gate::denies('create', new Reply)) {
+            return response(
+                'You are posting too frequently. Please take a break. :)', 429
+            );
+        }
 
-            $reply = $thread->addReply([
-               'body' => request('body'),
-               'user_id' => auth()->id()
-           ]);
+        try {
+            $request->validate([
+                'body' => ['required', new SpamFree()]
+            ]);
         } catch (\Exception $e) {
             return response(
                 'Sorry, your reply could not be saved at this time.', 422
             );
         }
+
+        $reply = $thread->addReply([
+            'body' => \request('body'),
+            'user_id' => auth()->id()
+        ]);
 
         return $reply->load('owner');
     }
@@ -90,7 +100,9 @@ class ReplyController extends Controller
         $this->authorize('update', $reply);
 
         try {
-            $this->validate(request(), ['body' => ['required', new SpamFree]]);
+            \request()->validate([
+                 'body' => ['required', new SpamFree]
+             ]);
 
             $reply->update(request(['body']));
         } catch (\Exception $e) {
