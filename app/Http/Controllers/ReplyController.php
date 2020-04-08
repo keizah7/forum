@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Inspections\Spam;
+use App\Http\Forms\CreatePostForm;
+use App\Http\Requests\CreatePostRequest;
 use App\Reply;
 use App\Rules\SpamFree;
 use App\Thread;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class ReplyController extends Controller
 {
@@ -37,39 +36,21 @@ class ReplyController extends Controller
      *
      * @param $channelId
      * @param Thread $thread
-     * @param Request $request
+     * @param CreatePostRequest $request
      * @return array|ResponseFactory|\Illuminate\Database\Eloquent\Model|\Illuminate\Http\Response
      */
-    public function store($channelId, Thread $thread, Request $request)
+    public function store($channelId, Thread $thread, CreatePostRequest $request)
     {
-        if (Gate::denies('create', new Reply)) {
-            return response(
-                'You are posting too frequently. Please take a break. :)', 429
-            );
-        }
-
-        try {
-            $request->validate([
-                'body' => ['required', new SpamFree()]
-            ]);
-        } catch (\Exception $e) {
-            return response(
-                'Sorry, your reply could not be saved at this time.', 422
-            );
-        }
-
-        $reply = $thread->addReply([
-            'body' => \request('body'),
+        return $thread->addReply([
+            'body' => request('body'),
             'user_id' => auth()->id()
-        ]);
-
-        return $reply->load('owner');
+        ])->load('owner');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Reply  $reply
+     * @param \App\Reply $reply
      * @return \Illuminate\Http\Response
      */
     public function show(Reply $reply)
@@ -80,7 +61,7 @@ class ReplyController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Reply  $reply
+     * @param \App\Reply $reply
      * @return \Illuminate\Http\Response
      */
     public function edit(Reply $reply)
@@ -101,13 +82,14 @@ class ReplyController extends Controller
 
         try {
             \request()->validate([
-                 'body' => ['required', new SpamFree]
-             ]);
+                'body' => ['required', new SpamFree]
+            ]);
 
             $reply->update(request(['body']));
         } catch (\Exception $e) {
             return response(
-                'Sorry, your reply could not be saved at this time.', 422
+                'Sorry, your reply could not be saved at this time.',
+                422
             );
         }
     }
