@@ -34,22 +34,24 @@ class ReplyController extends Controller
      *
      * @param Thread $thread
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return array|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Database\Eloquent\Model|\Illuminate\Http\Response
      */
-    public function store($channelId, Thread $thread, Request $request)
+    public function store($channelId, Thread $thread)
     {
-        $this->validateReply();
+        try {
+            $this->validateReply();
 
-        $reply = $thread->addReply([
-            'user_id' => auth()->id(),
-            'body' => $request->body,
-        ]);
-
-        if (request()->expectsJson()) {
-            return $reply->load('owner');
+            $reply = $thread->addReply([
+                                           'body' => request('body'),
+                                           'user_id' => auth()->id()
+                                       ]);
+        } catch (\Exception $e) {
+            return response(
+                'Sorry, your reply could not be saved at this time.', 422
+            );
         }
 
-        return redirect($thread->path())->with('flash', 'Your reply has been left');
+        return $reply->load('owner');
     }
 
     /**
@@ -78,17 +80,22 @@ class ReplyController extends Controller
      * Update the specified resource in storage.
      *
      * @param \App\Reply $reply
-     * @return void
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function update(Reply $reply)
     {
         $this->authorize('update', $reply);
 
-        $this->validateReply();
+        try {
+            $this->validateReply();
 
-        $reply->update(request(['body']));
+            $reply->update(request(['body']));
+        } catch (\Exception $e) {
+            return response(
+                'Sorry, your reply could not be saved at this time.', 422
+            );
+        }
     }
 
     /**
