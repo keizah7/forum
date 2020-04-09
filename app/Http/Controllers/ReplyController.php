@@ -40,10 +40,12 @@ class ReplyController extends Controller
      */
     public function store($channelId, Thread $thread, CreatePostRequest $request)
     {
-        return  $thread->addReply([
-            'body' => request('body'),
-            'user_id' => auth()->id()
-        ])->load('owner');
+        return $thread->addReply(
+            [
+                'body' => request('body'),
+                'user_id' => auth()->id()
+            ]
+        )->load('owner');
     }
 
     /**
@@ -72,32 +74,25 @@ class ReplyController extends Controller
      * Update the specified resource in storage.
      *
      * @param \App\Reply $reply
-     * @return ResponseFactory|\Illuminate\Http\Response
+     * @return void
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Reply $reply)
     {
         $this->authorize('update', $reply);
 
-        try {
-            \request()->validate([
-                'body' => ['required', new SpamFree]
-            ]);
+        request()->validate([
+            'body' => ['required', new SpamFree]
+        ]);
 
-            $reply->update(request(['body']));
-        } catch (\Exception $e) {
-            return response(
-                'Sorry, your reply could not be saved at this time.',
-                422
-            );
-        }
+        $reply->update(request(['body']));
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param \App\Reply $reply
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(Reply $reply)

@@ -13,9 +13,14 @@
         <div class="card-body">
             <div v-if="editing">
                 <div class="form-group">
-                    <textarea v-model="body" class="form-control mb-1" name="reply" id="" cols="30" rows="3"></textarea>
-                    <button class="btn btn-primary btn-sm" @click="update">Update</button>
-                    <button class="btn btn-outline-info btn-sm" @click="editing=false">Cancel</button>
+                    <form @submit.prevent="update">
+                        <div class="form-group">
+                            <textarea class="form-control" v-model="body" required></textarea>
+                        </div>
+
+                        <button class="btn btn-xs btn-primary">Update</button>
+                        <button class="btn btn-xs btn-link" @click="editing = false" type="button">Cancel</button>
+                    </form>
                 </div>
             </div>
             <article v-else v-text="body"></article>
