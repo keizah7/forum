@@ -42,4 +42,6 @@ Route::group(['prefix' => 'profiles/{user}'], function () {
 
 Route::delete('replies/{reply}', 'ReplyController@destroy')->middleware('auth');
 Route::patch('replies/{reply}', 'ReplyController@update')->middleware('auth');
+
 Route::get('api/users', 'Api\UserController@index');
+Route::post('api/users/{user}/avatar', 'Api\UserAvatarController@store')->middleware('auth')->name('avatar');
