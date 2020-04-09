@@ -4,38 +4,9 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                @forelse($threads as $thread)
-                    <div class="card {{ $loop->last ? '' : 'mb-3' }}">
-                        <div class="card-header">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <h4 class="mb-0">
-                                    <a href="{{ $thread->path() }}">
-                                        @guest
-                                            {{ $thread->title }}
-                                        @else
-                                            @if ($thread->hasUpdatesFor(auth()->user()))
-                                                <strong>
-                                                    {{ $thread->title }}
-                                                </strong>
-                                            @else
-                                                {{ $thread->title }}
-                                            @endif
-                                        @endguest
-                                    </a>
-                                </h4>
+                @include ('threads._list')
 
-                                <a href="{{ $thread->path() }}">{{ $thread->replies_count }} {{ Str::plural('reply', $thread->replies_count) }}</a>
-                            </div>
-                        </div>
-
-                        <div class="card-body">
-
-                            <div class="body">{{ $thread->body }}</div>
-                        </div>
-                    </div>
-                @empty
-                    List is empty
-                @endforelse
+                {{ $threads->links() }}
             </div>
         </div>
     </div>
