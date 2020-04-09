@@ -87,6 +87,7 @@ class User extends Authenticatable
      * Record that the user has read the given thread.
      *
      * @param Thread $thread
+     * @throws \Exception
      */
     public function read($thread)
     {
@@ -116,4 +117,16 @@ class User extends Authenticatable
     {
         return $this->hasOne(Reply::class)->latest();
     }
+
+    /**
+     * Get the path to the user's avatar.
+     *
+     * @param  string $avatar
+     * @return string
+     */
+    public function getAvatarPathAttribute($avatar)
+    {
+        return asset($avatar ?: 'images/avatars/default.png');
+    }
+
 }

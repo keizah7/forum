@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@push('head', asset('/css/vendor/jquery.atwho.css'))
+@push('head')
+    <link rel="stylesheet" href="/css/vendor/jquery.atwho.css">
+@endpush
 
 @section('content')
     <thread-view :initial-replies-count="{{ $thread->replies->count() }}" inline-template>
@@ -8,6 +10,11 @@
             <div class="row">
                 <div class="col-md-8">
                     <div class="card mb-3">
+                        <img src="{{ $thread->creator->avatar_path }}"
+                             alt="{{ $thread->creator->name }}"
+                             width="25"
+                             height="25"
+                             class="mr-1">
                         <div class="card-header d-flex justify-content-between items-center">
                             {{ $thread->title }}
                             @can('update', $thread)

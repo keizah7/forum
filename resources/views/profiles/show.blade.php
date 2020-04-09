@@ -8,6 +8,7 @@
                     <div class="card-body">
                         <h2>{{ $user->name }}</h2>
                         Since {{ $user->created_at }}
+{{--                        <avatar-form :user="{{ $profileUser }}"></avatar-form>--}}
                     </div>
                 </div>
 
