@@ -10,7 +10,7 @@ use Tests\TestCase;
 class MentionUserTest extends TestCase
 {
     /** @test */
-    function mentioned_users_in_a_reply_are_notified()
+    public function mentioned_users_in_a_reply_are_notified()
     {
         $this->withoutExceptionHandling();
         $john = create(User::class, ['name' => 'JohnDoe']);
@@ -28,5 +28,17 @@ class MentionUserTest extends TestCase
         $this->json('post', $thread->path() . '/replies', $reply->toArray());
 
         $this->assertCount(1, $jane->notifications);
+    }
+
+    /** @test */
+    public function it_can_fetch_all_mentioned_users_starting_with_the_given_characters()
+    {
+        create(User::class, ['name' => 'johndoe']);
+        create(User::class, ['name' => 'johndoe2']);
+        create(User::class, ['name' => 'janedoe']);
+
+        $results = $this->json('GET', '/api/users', ['name' => 'john']);
+
+        $this->assertCount(2, $results->json());
     }
 }

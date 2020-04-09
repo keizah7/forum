@@ -38,6 +38,7 @@
                 'user' => auth()->user(),
             ]) !!}
         </script>
+        @stack('head')
     </head>
     <body>
         <div id="app">
@@ -49,5 +50,6 @@
 
             <flash message="{{ session('flash') }}"></flash>
         </div>
+        @stack('scripts')
     </body>
 </html>

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@push('head', asset('/css/vendor/jquery.atwho.css'))
+
 @section('content')
     <thread-view :initial-replies-count="{{ $thread->replies->count() }}" inline-template>
         <div class="container">
