@@ -23,7 +23,7 @@
                     </form>
                 </div>
             </div>
-            <article v-else v-html="body"></article>
+            <article v-html="body" v-else></article>
         </div>
 
         <div class="card-footer d-flex" v-if="canUpdate">
@@ -48,7 +48,7 @@
             };
         },
         computed: {
-            ago(){
+            ago() {
                 return moment(moment.utc(this.data.created_at)).fromNow();
             },
             signedIn() {
