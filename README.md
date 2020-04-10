@@ -13,5 +13,17 @@
 ### Forum:
 This project is for educational porpuses only. Pull request are welcome! Thank you for your cooperation!
 
+## Installation
+```
+git clone https://github.com/keizah7/forum.git forum
+cd forum
+composer install
+vagrant up
+vagrant ssh
+php74
+cd forum
+php artisan migrate:fresh --seed
+```
+
 ### Authors
 [Artūras](https://github.com/keizah7) ![Followers](https://img.shields.io/github/followers/keizah7?style=social)
