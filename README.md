@@ -12,6 +12,6 @@
 
 ### Forum:
 This project is for educational porpuses only. Pull request are welcome! Thank you for your cooperation!
-W
+
 ### Authors
 [Artūras](https://github.com/keizah7) ![Followers](https://img.shields.io/github/followers/keizah7?style=social)
