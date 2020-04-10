@@ -6,9 +6,8 @@
             <div class="col-md-8">
                 <div class="card mb-3">
                     <div class="card-body">
-                        <h2>{{ $user->name }}</h2>
                         Since {{ $user->created_at }}
-{{--                        <avatar-form :user="{{ $profileUser }}"></avatar-form>--}}
+                        <avatar-form :user="{{ $user }}"></avatar-form>
                     </div>
                 </div>
 

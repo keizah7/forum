@@ -119,14 +119,14 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the path to the user's avatar.
+     * Get the path to the user's avatars.
      *
      * @param  string $avatar
      * @return string
      */
     public function getAvatarPathAttribute($avatar)
     {
-        return asset($avatar ?: 'images/avatars/default.png');
+        return asset(\Storage::url($avatar ?: 'avatars/default.png'));
     }
 
 }

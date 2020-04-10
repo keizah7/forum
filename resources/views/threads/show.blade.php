@@ -10,13 +10,17 @@
             <div class="row">
                 <div class="col-md-8">
                     <div class="card mb-3">
-                        <img src="{{ $thread->creator->avatar_path }}"
-                             alt="{{ $thread->creator->name }}"
-                             width="25"
-                             height="25"
-                             class="mr-1">
+
                         <div class="card-header d-flex justify-content-between items-center">
-                            {{ $thread->title }}
+                            <div class="d-flex align-items-center">
+                                <img src="{{ $thread->creator->avatar_path }}"
+                                     alt="{{ $thread->creator->name }}"
+                                     width="25"
+                                     height="25"
+                                     class="mr-1">
+                                <a class="mr-2" href="{{ route('user.profile', $thread->creator) }}">{{ $thread->creator->name }}</a> {{ $thread->title }}
+                            </div>
+
                             @can('update', $thread)
                                 <form action="/threads/{{ $thread->id }}" method="post">
                                     @csrf
@@ -39,9 +43,7 @@
                 <div class="col-md-4">
                     <div class="card mb-3">
                         <div class="card-body">
-                            Published {{ $thread->created_at->diffForHumans() }} by
-                            <a href="{{ route('user.profile', $thread->creator) }}">{{ $thread->creator->name }}</a>
-                            , and has
+                            Published {{ $thread->created_at->diffForHumans() }} and has
                             <span v-text="repliesCount"></span> {{ Str::plural('reply', $thread->replies_count) }}
 
                             <p>
