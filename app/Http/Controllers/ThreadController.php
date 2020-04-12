@@ -6,6 +6,7 @@ use App\Channel;
 use App\Filters\ThreadFilters;
 use App\Rules\SpamFree;
 use App\Thread;
+use App\Trending;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 
@@ -16,23 +17,25 @@ class ThreadController extends Controller
      *
      * @param Channel $channel
      * @param ThreadFilters $filters
+     * @param Trending $trending
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
-    public function index(Channel $channel, ThreadFilters $filters)
+    public function index(Channel $channel, ThreadFilters $filters, Trending $trending)
     {
         $threads = $this->getThreads($channel, $filters);
 
         if (\request()->wantsJson()) return $threads;
 
-        $trending = array_map('json_decode', Redis::zrevrange('trending_threads', 0, 4));
-
-        return view('threads.index', compact('threads', 'trending'));
+        return view('threads.index', [
+            'threads' => $threads,
+            'trending' => $trending->get(),
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
@@ -67,19 +70,18 @@ class ThreadController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Thread  $thread
+     * @param $channel
+     * @param \App\Thread $thread
+     * @param Trending $trending
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function show($channel, Thread $thread)
+    public function show($channel, Thread $thread, Trending $trending)
     {
         if (auth()->check()) {
             auth()->user()->read($thread);
         }
 
-        Redis::zincrby('trending_threads', 1, json_encode([
-            'title' => $thread->title,
-            'path' => $thread->path(),
-        ]));
+        $trending->push($thread);
 
         return view('threads.show', compact('thread'));
     }

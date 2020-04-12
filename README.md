@@ -22,6 +22,7 @@ vagrant up
 vagrant ssh
 php74
 cd forum
+npm install && npm run dev
 php artisan migrate:fresh --seed
 ```
 
