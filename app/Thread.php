@@ -40,7 +40,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Thread extends Model
 {
-    use RecordsActivity;
+    use RecordsActivity, RecordsVisits;
 
     protected $guarded = [];
     protected $with = ['creator', 'channel'];

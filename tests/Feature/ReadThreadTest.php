@@ -87,7 +87,7 @@ class ReadThreadTest extends TestCase
     }
 
     /** @test */
-    function a_user_can_filter_threads_by_those_that_are_unanswered()
+    public function a_user_can_filter_threads_by_those_that_are_unanswered()
     {
         $thread = create(Thread::class);
         create(Reply::class, ['thread_id' => $thread->id]);
