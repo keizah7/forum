@@ -40,7 +40,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Thread extends Model
 {
-    use RecordsActivity, RecordsVisits;
+    use RecordsActivity;
 
     protected $guarded = [];
     protected $with = ['creator', 'channel'];
@@ -54,6 +54,11 @@ class Thread extends Model
     protected static function boot()
     {
         parent::boot();
+    }
+
+    public function visits()
+    {
+        return new Visits($this);
     }
 
     public function channel()
