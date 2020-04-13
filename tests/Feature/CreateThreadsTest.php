@@ -6,6 +6,7 @@ use App\Activity;
 use App\Channel;
 use App\Reply;
 use App\Thread;
+use App\User;
 use Tests\TestCase;
 
 class CreateThreadsTest extends TestCase
@@ -15,6 +16,13 @@ class CreateThreadsTest extends TestCase
     {
         $this->get('threads/create')->assertRedirect('login');
         $this->post('threads')->assertRedirect('login');
+    }
+
+    /** @test */
+    public function new_users_must_first_confirm_their_email_address_before_creating_threads
+    {
+        $this->publishThread([], create(User::class, ['email_verified_at' => null]))
+            ->assertRedirect('email/verify');
     }
 
     /** @test */
@@ -31,21 +39,21 @@ class CreateThreadsTest extends TestCase
     /** @test */
     public function a_thread_requires_a_title()
     {
-        $this->publishTread(['title' => null])->assertSessionHasErrors('title');
+        $this->publishThread(['title' => null])->assertSessionHasErrors('title');
     }
 
     /** @test */
     public function a_thread_requires_a_body()
     {
-        $this->publishTread(['body' => null])->assertSessionHasErrors('body');
+        $this->publishThread(['body' => null])->assertSessionHasErrors('body');
     }
 
     /** @test */
     public function a_thread_requires_a_valid_channel()
     {
-        $this->publishTread(['channel_id' => create(Channel::class)->id])->assertSessionHasNoErrors();
-        $this->publishTread(['channel_id' => null])->assertSessionHasErrors('channel_id');
-        $this->publishTread(['channel_id' => 9])->assertSessionHasErrors('channel_id');
+        $this->publishThread(['channel_id' => create(Channel::class)->id])->assertSessionHasNoErrors();
+        $this->publishThread(['channel_id' => null])->assertSessionHasErrors('channel_id');
+        $this->publishThread(['channel_id' => 9])->assertSessionHasErrors('channel_id');
     }
 
 
@@ -88,9 +96,8 @@ class CreateThreadsTest extends TestCase
         $this->assertEquals(0, Activity::count());
     }
 
-
-    private function publishTread($attributes = null)
+    private function publishThread($attributes = [], $user = null)
     {
-        return $this->signIn()->post('threads', make(Thread::class, $attributes)->toArray());
+        return $this->signIn($user)->post('threads', make(Thread::class, $attributes)->toArray());
     }
 }

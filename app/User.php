@@ -40,7 +40,7 @@ use Illuminate\Notifications\Notifiable;
  * @property-read \App\Reply $lastReply
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAvatarPath($value)
  */
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
 

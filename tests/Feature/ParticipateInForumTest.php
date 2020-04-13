@@ -78,7 +78,7 @@ class ParticipateInForumTest extends TestCase
     }
 
     /** @test */
-    function authorized_users_can_update_replies()
+    public function authorized_users_can_update_replies()
     {
         $this->signIn();
 
@@ -91,7 +91,7 @@ class ParticipateInForumTest extends TestCase
     }
 
     /** @test */
-    function replies_that_contain_spam_may_not_be_created()
+    public function replies_that_contain_spam_may_not_be_created()
     {
         $this->signIn();
 
@@ -104,7 +104,7 @@ class ParticipateInForumTest extends TestCase
     }
 
     /** @test */
-    function users_may_only_reply_a_maximum_of_once_per_minute()
+    public function users_may_only_reply_a_maximum_of_once_per_minute()
     {
         $this->signIn();
 

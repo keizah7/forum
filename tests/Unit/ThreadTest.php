@@ -56,7 +56,7 @@ class ThreadTest extends TestCase
     }
 
     /** @test */
-    function a_thread_notifies_all_registered_subscribers_when_a_reply_is_added()
+    public function a_thread_notifies_all_registered_subscribers_when_a_reply_is_added()
     {
         Notification::fake();
         $this->signIn()
@@ -100,7 +100,7 @@ class ThreadTest extends TestCase
     }
 
     /** @test */
-    function it_knows_if_the_authenticated_user_is_subscribed_to_it()
+    public function it_knows_if_the_authenticated_user_is_subscribed_to_it()
     {
         $this->signIn();
 
