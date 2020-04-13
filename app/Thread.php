@@ -4,6 +4,7 @@ namespace App;
 
 use App\Events\ThreadReceivedNewReply;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 /**
  * App\Thread
@@ -56,6 +57,17 @@ class Thread extends Model
         parent::boot();
     }
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    public function setTitleAttribute($value)
+    {
+        $this->attributes['title'] = $value;
+        $this->attributes['slug'] = Str::slug($value);
+    }
+
     public function visits()
     {
         return new Visits($this);
@@ -68,7 +80,7 @@ class Thread extends Model
 
     public function path()
     {
-        return "/threads/{$this->channel->slug}/{$this->id}";
+        return "/threads/{$this->channel->slug}/{$this->slug}";
     }
 
     public function replies()

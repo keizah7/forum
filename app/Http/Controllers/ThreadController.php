@@ -118,7 +118,7 @@ class ThreadController extends Controller
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
-    public function destroy(Thread $thread)
+    public function destroy($channel, Thread $thread)
     {
         $this->authorize('update', $thread);
 

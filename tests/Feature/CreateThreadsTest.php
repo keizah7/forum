@@ -19,7 +19,7 @@ class CreateThreadsTest extends TestCase
     }
 
     /** @test */
-    public function new_users_must_first_confirm_their_email_address_before_creating_threads
+    public function new_users_must_first_confirm_their_email_address_before_creating_threads()
     {
         $this->publishThread([], create(User::class, ['email_verified_at' => null]))
             ->assertRedirect('email/verify');
@@ -62,12 +62,12 @@ class CreateThreadsTest extends TestCase
     {
         $thread = create(Thread::class);
         $this
-            ->delete("threads/{$thread->id}")
+            ->delete($thread->path())
             ->assertRedirect('login');
-        $this->assertDatabaseHas('threads', $thread->only('id'));
+        $this->assertDatabaseHas('threads', $thread->only('slug'));
 
         $this->signIn();
-        $this->delete("threads/{$thread->id}")->assertStatus(403);
+        $this->delete($thread->path())->assertStatus(403);
     }
 
 
@@ -76,12 +76,10 @@ class CreateThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $thread = create(Thread::class, [
-            'user_id' => auth()->id()
-        ]);
+        $thread = create(Thread::class, ['user_id' => auth()->id()]);
         $reply = create(Reply::class, ['thread_id' => $thread]);
 
-        $this->delete("threads/{$thread->id}");
+        $this->delete($thread->path());
 
         $this->assertDatabaseMissing('threads', $thread->only('id'));
         $this->assertDatabaseMissing('replies', $reply->only('id'));

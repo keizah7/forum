@@ -11,7 +11,8 @@ $factory->define(Thread::class, function (Faker $faker) {
     return [
         'user_id' => User::count() ? User::pluck('id')->random() : factory(User::class),
         'channel_id' => factory(Channel::class),
-        'title' => $faker->sentence,
+        'title' => $title = $faker->sentence,
+        'slug' => Str::slug($title),
         'body' => $faker->paragraph,
         'visits' => 0,
     ];

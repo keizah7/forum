@@ -17,11 +17,13 @@ Route::get('/', fn () => view('welcome'));
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => 'threads'], function () {
-  Route::name('threads.')->group(function () {
-      Route::resource('', 'ThreadController')->parameters(['' => 'thread'])->except(['index', 'show', 'store'])->middleware('auth');
-      Route::get('', 'ThreadController@index')->name('index');
+    Route::get('', 'ThreadController@index')->name('threads');
+
+    Route::name('threads.')->group(function () {
+      Route::resource('', 'ThreadController')->parameters(['' => 'thread'])->except(['index', 'show', 'store', 'destroy'])->middleware('auth');
       Route::get('{channel}/{thread}', 'ThreadController@show')->name('show');
       Route::post('', 'ThreadController@store')->name('store')->middleware(['verified', 'auth']);
+      Route::delete('{channel}/{thread}', 'ThreadController@destroy')->name('destroy')->middleware('auth');
   });
 
   Route::post('{channel}/{thread}/subscriptions', 'SubscriptionController@store')->middleware('auth');
