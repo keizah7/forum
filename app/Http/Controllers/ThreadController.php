@@ -46,7 +46,7 @@ class ThreadController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
      */
     public function store(Request $request)
     {
@@ -56,13 +56,16 @@ class ThreadController extends Controller
             'channel_id' => 'required|exists:channels,id',
         ]);
 
-
         $thread = Thread::create([
             'user_id' => auth()->id(),
             'channel_id' => $request->channel_id,
             'title' => $request->title,
             'body' => $request->body,
         ]);
+
+        if (request()->wantsJson()) {
+            return response($thread, 201);
+        }
 
         return redirect($thread->path())->with('flash', 'Your thread has been published');
     }

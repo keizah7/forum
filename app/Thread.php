@@ -55,6 +55,10 @@ class Thread extends Model
     protected static function boot()
     {
         parent::boot();
+
+        static::created(function ($thread) {
+            $thread->update(['slug' => $thread->title]);
+        });
     }
 
     public function getRouteKeyName()
@@ -162,12 +166,10 @@ class Thread extends Model
      *
      * @param string $value
      */
-    public function setTitleAttribute($value)
+    public function setSlugAttribute($value)
     {
-        $this->attributes['title'] = $value;
-
         if (static::whereSlug($slug = Str::slug($value))->exists()) {
-            $slug = $this->incrementSlug($slug);
+            $slug = "{$slug}-{$this->id}";
         }
 
         $this->attributes['slug'] = $slug;
