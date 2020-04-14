@@ -36,6 +36,8 @@ Route::group(['prefix' => 'threads'], function () {
 
 Route::post('replies/{reply}/favorites', 'FavoriteController@store')->middleware('auth');
 Route::delete('replies/{reply}/favorites', 'FavoriteController@destroy')->middleware('auth');
+Route::post('/replies/{reply}/best', 'BestReplyController@store')->name('best-replies.store');
+
 
 Route::group(['prefix' => 'profiles/{user}'], function () {
     Route::get('', 'ProfileController@show')->name('user.profile');
@@ -48,3 +50,4 @@ Route::patch('replies/{reply}', 'ReplyController@update')->middleware('auth');
 
 Route::get('api/users', 'Api\UserController@index');
 Route::post('api/users/{user}/avatars', 'Api\UserAvatarController@store')->middleware('auth')->name('avatars');
+

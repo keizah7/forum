@@ -20,12 +20,14 @@ class CreateThreadsTable extends Migration
             $table->unsignedBigInteger('channel_id');
             $table->unsignedInteger('replies_count')->default(0);
             $table->unsignedInteger('visits')->default(0);
+            $table->unsignedBigInteger('best_reply_id')->nullable();
             $table->string('title');
             $table->text('body');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('channel_id')->references('id')->on('channels')->onDelete('cascade');
+            $table->foreign('best_reply_id')->references('id')->on('replies')->onDelete('cascade');
         });
     }
 

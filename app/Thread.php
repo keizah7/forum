@@ -100,6 +100,16 @@ class Thread extends Model
         return $reply;
     }
 
+    /**
+     * Mark the given reply as the best answer.
+     *
+     * @param Reply $reply
+     */
+    public function markBestReply(Reply $reply)
+    {
+        $this->update(['best_reply_id' => $reply->id]);
+    }
+
     public function scopeFilter($query, $filters)
     {
         return $filters->apply($query);

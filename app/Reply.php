@@ -58,6 +58,16 @@ class Reply extends Model
         });
     }
 
+    /**
+     * Determine if the current reply is marked as the best.
+     *
+     * @return bool
+     */
+    public function isBest()
+    {
+        return $this->thread->best_reply_id == $this->id;
+    }
+
     public function owner()
     {
         return $this->belongsTo(User::class, 'user_id');
