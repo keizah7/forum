@@ -31,6 +31,10 @@
             [v-cloak] {
                 display: none;
             }
+
+            .ml-a {
+                margin-left: auto;
+            }
         </style>
         <script>
             window.app = {!! json_encode([

@@ -1,5 +1,5 @@
 <template>
-    <div :id="'reply'+id" class="card mb-2">
+    <div :id="'reply-'+id" class="card" :class="isBest ? 'card-success': 'card-default'">
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
                 <a :href="'/profiles/'+data.owner.name" v-text="data.owner.name"></a>
@@ -26,9 +26,12 @@
             <article v-html="body" v-else></article>
         </div>
 
-        <div class="card-footer d-flex" v-if="canUpdate">
-            <button class="btn btn-sm btn-success mr-1" @click="editing = true">Edit</button>
-            <button class="btn btn-danger btn-sm" @click="destroy">Delete</button>
+        <div class="card-footer d-flex justify-content-between">
+            <div v-if="canUpdate">
+                <button class="btn btn-sm btn-success mr-1" @click="editing = true">Edit</button>
+                <button class="btn btn-danger btn-sm" @click="destroy">Delete</button>
+            </div>
+            <button class="btn btn-sm btn-outline-primary ml-a" @click="markBestReply" v-show="! isBest">Best Reply</button>
         </div>
     </div>
 </template>
@@ -43,10 +46,19 @@
         data() {
             return {
                 editing: false,
+                id: this.data.id,
                 body: this.data.body,
-                id: this.data.id
+                isBest: this.data.isBest,
+                reply: this.data
             };
         },
+
+        created () {
+            window.events.$on('best-reply-selected', id => {
+                this.isBest = (id === this.id);
+            });
+        },
+
         computed: {
             ago() {
                 return moment(moment.utc(this.data.created_at)).fromNow();
@@ -78,6 +90,10 @@
                 axios.delete('/replies/' + this.data.id);
 
                 this.$emit('deleted', this.data.id)
+            },
+            markBestReply() {
+                axios.post('/replies/' + this.data.id + '/best');
+                window.events.$emit('best-reply-selected', this.data.id);
             }
         }
     }
