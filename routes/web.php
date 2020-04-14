@@ -34,19 +34,19 @@ Route::group(['prefix' => 'threads'], function () {
   Route::get('{channel}', 'ThreadController@index')->name('thread.index');
 });
 
-Route::post('replies/{reply}/favorites', 'FavoriteController@store')->middleware('auth');
-Route::delete('replies/{reply}/favorites', 'FavoriteController@destroy')->middleware('auth');
-Route::post('/replies/{reply}/best', 'BestReplyController@store')->name('best-replies.store');
-
+Route::group(['middleware' => 'auth', 'prefix' => 'replies/{reply}'], function () {
+    Route::post('/favorites', 'FavoriteController@store');
+    Route::delete('/favorites', 'FavoriteController@destroy');
+    Route::post('/best', 'BestReplyController@store')->name('best-replies.store');
+    Route::delete('', 'ReplyController@destroy')->name('replies.destroy');
+    Route::patch('', 'ReplyController@update');
+});
 
 Route::group(['prefix' => 'profiles/{user}'], function () {
     Route::get('', 'ProfileController@show')->name('user.profile');
     Route::get('notifications', 'UserNotificationController@index');
     Route::delete('/notifications/{notification}', 'UserNotificationController@destroy')->middleware('auth');
 });
-
-Route::delete('replies/{reply}', 'ReplyController@destroy')->middleware('auth');
-Route::patch('replies/{reply}', 'ReplyController@update')->middleware('auth');
 
 Route::get('api/users', 'Api\UserController@index');
 Route::post('api/users/{user}/avatars', 'Api\UserAvatarController@store')->middleware('auth')->name('avatars');
