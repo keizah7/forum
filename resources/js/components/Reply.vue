@@ -1,5 +1,5 @@
 <template>
-    <div :id="'reply-'+id" class="card" :class="isBest ? 'card-success': 'card-default'">
+    <div :id="'reply-'+id" class="card mb-2" :class="isBest ? 'border-success': 'card-default'">
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
                 <a :href="'/profiles/'+data.owner.name" v-text="data.owner.name"></a>
@@ -27,7 +27,7 @@
         </div>
 
         <div class="card-footer d-flex justify-content-between">
-            <div v-if="canUpdate">
+            <div v-if="authorize('updateReply', reply)">
                 <button class="btn btn-sm btn-success mr-1" @click="editing = true">Edit</button>
                 <button class="btn btn-danger btn-sm" @click="destroy">Delete</button>
             </div>
