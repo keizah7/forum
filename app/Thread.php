@@ -61,6 +61,14 @@ class Thread extends Model
         });
     }
 
+    /**
+     * Lock the thread.
+     */
+    public function lock()
+    {
+        $this->update(['locked' => true]);
+    }
+    
     public function getRouteKeyName()
     {
         return 'slug';

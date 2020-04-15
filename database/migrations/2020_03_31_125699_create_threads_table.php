@@ -23,6 +23,7 @@ class CreateThreadsTable extends Migration
             $table->unsignedBigInteger('best_reply_id')->nullable();
             $table->string('title');
             $table->text('body');
+            $table->boolean('locked')->default(false);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
