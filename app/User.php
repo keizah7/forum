@@ -132,4 +132,13 @@ class User extends Authenticatable implements MustVerifyEmail
         return asset(\Storage::url($avatar ?: 'avatars/default.png'));
     }
 
+    /**
+     * Determine if the user is an administrator.
+     *
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return in_array($this->name, ['JohnDoe', 'JaneDoe']);
+    }
 }

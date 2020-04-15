@@ -51,3 +51,4 @@ Route::group(['prefix' => 'profiles/{user}'], function () {
 Route::get('api/users', 'Api\UserController@index');
 Route::post('api/users/{user}/avatars', 'Api\UserAvatarController@store')->middleware('auth')->name('avatars');
 
+Route::post('locked-threads/{thread}', 'LockThreadController@store')->name('locked-threads.store')->middleware('admin');
