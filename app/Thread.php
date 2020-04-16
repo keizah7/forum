@@ -70,6 +70,16 @@ class Thread extends Model
         });
     }
 
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return $this->toArray() + ['path' => $this->path()];
+    }
+    
     public function getRouteKeyName()
     {
         return 'slug';
