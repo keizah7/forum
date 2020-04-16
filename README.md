@@ -14,6 +14,11 @@
 This project is for educational porpuses only. Pull request are welcome! Thank you for your cooperation!
 
 ## Installation
+`.env`
+```
+RECAPTCHA_SECRET=fillReCaptchaV2CheckboxSecretkey
+```
+Commands
 ```
 git clone https://github.com/keizah7/forum.git forum
 cd forum

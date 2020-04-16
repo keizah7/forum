@@ -4,12 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Channel;
 use App\Filters\ThreadFilters;
+use App\Rules\Recaptcha;
 use App\Rules\SpamFree;
 use App\Thread;
 use App\Trending;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redis;
-use Zttp\Zttp;
 
 class ThreadController extends Controller
 {
@@ -25,12 +24,33 @@ class ThreadController extends Controller
     {
         $threads = $this->getThreads($channel, $filters);
 
-        if (\request()->wantsJson()) return $threads;
+        if (\request()->wantsJson()) {
+            return $threads;
+        }
 
-        return view('threads.index', [
-            'threads' => $threads,
-            'trending' => $trending->get(),
-        ]);
+        return view(
+            'threads.index',
+            [
+                'threads' => $threads,
+                'trending' => $trending->get(),
+            ]
+        );
+    }
+
+    /**
+     * @param Channel $channel
+     * @param ThreadFilters $filters
+     * @return mixed
+     */
+    private function getThreads(Channel $channel, ThreadFilters $filters)
+    {
+        $threads = Thread::filter($filters);
+
+        if ($channel->exists) {
+            $threads->whereChannelId($channel->id);
+        }
+
+        return $threads->latest()->paginate(25);
     }
 
     /**
@@ -46,33 +66,29 @@ class ThreadController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     * @param Recaptcha $recaptcha
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(Request $request, Recaptcha $recaptcha)
     {
-        $request->validate([
-            'title' => ['required', new SpamFree],
-            'body' => ['required', new SpamFree],
-            'channel_id' => 'required|exists:channels,id',
-        ]);
+        $request->validate(
+            [
+                'title' => ['required', new SpamFree],
+                'body' => ['required', new SpamFree],
+                'channel_id' => 'required|exists:channels,id',
+                'g-recaptcha-response' => [$recaptcha],
+            ]
+        );
 
-        $thread = Thread::create([
-            'user_id' => auth()->id(),
-            'channel_id' => $request->channel_id,
-            'title' => $request->title,
-            'body' => $request->body,
-        ]);
-
-        $response = Zttp::asFormParams()->post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret' => config('services.recaptcha.secret'),
-            'response' => $request->input('g-recaptcha-response'),
-            'remoteip' => request()->ip()
-        ]);
-
-        if (! $response->json()['success']) {
-            throw new \Exception('Recaptcha failed');
-        }
+        $thread = Thread::create(
+            [
+                'user_id' => auth()->id(),
+                'channel_id' => $request->channel_id,
+                'title' => $request->title,
+                'body' => $request->body,
+            ]
+        );
 
         if (request()->wantsJson()) {
             return response($thread, 201);
@@ -105,7 +121,7 @@ class ThreadController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Thread  $thread
+     * @param \App\Thread $thread
      * @return \Illuminate\Http\Response
      */
     public function edit(Thread $thread)
@@ -116,8 +132,8 @@ class ThreadController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Thread  $thread
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Thread $thread
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Thread $thread)
@@ -140,21 +156,5 @@ class ThreadController extends Controller
         $thread->delete();
 
         return redirect('threads');
-    }
-
-    /**
-     * @param Channel $channel
-     * @param ThreadFilters $filters
-     * @return mixed
-     */
-    private function getThreads(Channel $channel, ThreadFilters $filters)
-    {
-        $threads = Thread::filter($filters);
-
-        if ($channel->exists) {
-            $threads->whereChannelId($channel->id);
-        }
-
-        return $threads->latest()->paginate(25);
     }
 }
