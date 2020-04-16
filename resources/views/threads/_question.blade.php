@@ -5,7 +5,7 @@
 
     <div class="card-body">
         <article class="form-group">
-            <textarea class="form-control" id="" cols="30" rows="5" v-model="form.body"></textarea>
+            <wysiwyg v-model="form.body"></wysiwyg>
         </article>
     </div>
 
@@ -17,7 +17,7 @@
 
 
         @can('update', $thread)
-            <form action="/threads/{{ $thread->id }}" method="post">
+            <form action="{{$thread->path()}}" method="post">
                 @csrf
                 @method('delete')
                 <button class="btn btn-danger" type="submit">Delete</button>
@@ -41,7 +41,7 @@
 
     <div class="card-body">
         <article>
-            <p v-text="body"></p>
+            <p v-html="body"></p>
         </article>
     </div>
 
