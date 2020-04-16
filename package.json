@@ -27,6 +27,7 @@
         "at.js": "^1.5.4",
         "font-awesome": "^4.7.0",
         "jquery.caret": "^0.3.1",
-        "moment": "^2.24.0"
+        "moment": "^2.24.0",
+        "vue-instantsearch": "^2.7.0"
     }
 }
