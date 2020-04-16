@@ -9,6 +9,7 @@ use App\Thread;
 use App\Trending;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
+use Zttp\Zttp;
 
 class ThreadController extends Controller
 {
@@ -62,6 +63,16 @@ class ThreadController extends Controller
             'title' => $request->title,
             'body' => $request->body,
         ]);
+
+        $response = Zttp::asFormParams()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => config('services.recaptcha.secret'),
+            'response' => $request->input('g-recaptcha-response'),
+            'remoteip' => request()->ip()
+        ]);
+
+        if (! $response->json()['success']) {
+            throw new \Exception('Recaptcha failed');
+        }
 
         if (request()->wantsJson()) {
             return response($thread, 201);
