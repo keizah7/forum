@@ -14,6 +14,7 @@ class AddForeignKeyToThreadsTable extends Migration
     public function up()
     {
         Schema::table('threads', function (Blueprint $table) {
+            $table->unsignedBigInteger('best_reply_id')->nullable()->after('channel_id');
             $table->foreign('best_reply_id')->references('id')->on('replies')->onDelete('set null');
         });
     }
@@ -27,6 +28,7 @@ class AddForeignKeyToThreadsTable extends Migration
     {
         Schema::table('threads', function (Blueprint $table) {
             $table->dropForeign(['best_reply_id']);
+            $table->dropColumn('best_reply_id');
         });
     }
 }
