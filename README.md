@@ -16,7 +16,7 @@ This project is for educational porpuses only. Pull request are welcome! Thank y
 ## Installation
 `.env`
 ```
-RECAPTCHA_SECRET=fillReCaptchaV2CheckboxSecretkey
+RECAPTCHA_SECRET=fillReCaptchaV2CheckboxSecretKey
 ```
 Commands
 ```

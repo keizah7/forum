@@ -8,17 +8,16 @@
         data() {
             return {
                 repliesCount: this.thread.replies_count,
-                locked: this.thread.locked
+                locked: this.thread.locked,
+                title: this.thread.title,
+                body: this.thread.body,
+                form: {},
+                editing: false
             }
         },
+        created() {
+            this.resetForm();
+        },
         components: {Replies, SubscribeButton},
-        methods: {
-            toggleLock() {
-                axios[
-                    this.locked ? 'delete' : 'post'
-                    ]('/locked-threads/' + this.thread.slug);
-                this.locked = !this.locked;
-            }
-        }
     }
 </script>

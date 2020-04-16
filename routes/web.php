@@ -18,14 +18,13 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => 'threads'], function () {
     Route::get('', 'ThreadController@index')->name('threads');
-
     Route::name('threads.')->group(function () {
-      Route::resource('', 'ThreadController')->parameters(['' => 'thread'])->only(['create', 'edit', 'show'])->middleware('auth');
-      Route::get('{channel}/{thread}', 'ThreadController@show')->name('show');
-      Route::post('', 'ThreadController@store')->name('store')->middleware(['verified', 'auth']);
-      Route::delete('{channel}/{thread}', 'ThreadController@destroy')->name('destroy')->middleware('auth');
-      Route::patch('{channel}/{thread}', 'ThreadController@update');
-  });
+        Route::resource('', 'ThreadController')->parameters(['' => 'thread'])->only(['create', 'edit'])->middleware('auth');
+        Route::get('{channel}/{thread}', 'ThreadController@show')->name('show');
+        Route::post('', 'ThreadController@store')->name('store')->middleware(['verified', 'auth']);
+        Route::delete('{channel}/{thread}', 'ThreadController@destroy')->name('destroy')->middleware('auth');
+        Route::patch('{channel}/{thread}', 'ThreadController@update');
+    });
 
   Route::post('{channel}/{thread}/subscriptions', 'SubscriptionController@store')->middleware('auth');
   Route::delete('{channel}/{thread}/subscriptions', 'SubscriptionController@destroy')->middleware('auth');

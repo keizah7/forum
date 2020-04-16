@@ -8,35 +8,8 @@
     <thread-view :thread="{{ $thread }}" inline-template>
         <div class="container">
             <div class="row">
-                <div class="col-md-8">
-                    <div class="card mb-3">
-
-                        <div class="card-header d-flex justify-content-between items-center">
-                            <div class="d-flex align-items-center">
-                                <img src="{{ $thread->creator->avatar_path }}"
-                                     alt="{{ $thread->creator->name }}"
-                                     width="25"
-                                     height="25"
-                                     class="mr-1">
-                                <a class="mr-2" href="{{ route('user.profile', $thread->creator) }}">{{ $thread->creator->name }}</a> {{ $thread->title }}
-                            </div>
-
-                            @can('update', $thread)
-                                <form action="/threads/{{ $thread->id }}" method="post">
-                                    @csrf
-                                    @method('delete')
-                                    <button class="btn btn-danger" type="submit">Delete</button>
-                                </form>
-                            @endcan
-                        </div>
-
-                        <div class="card-body">
-                            <article>
-                                <p>{{ $thread->body }}</p>
-                            </article>
-
-                        </div>
-                    </div>
+                <div class="col-md-8" v-cloak>
+                    @include ('threads._question')
 
                     <replies @added="repliesCount++" @removed="repliesCount--"></replies>
                 </div>
@@ -47,7 +20,7 @@
                             <span v-text="repliesCount"></span> {{ Str::plural('reply', $thread->replies_count) }}
 
                             <p>
-                                <subscribe-button :active="{{ json_encode($thread->isSubscribedTo) }}" v-if="signedIn"></subscribe-button>
+                                <subscribe-button :active="@json($thread->isSubscribedTo)" v-if="signedIn"></subscribe-button>
 
                                 <button class="btn btn-outline-primary"
                                         v-if="authorize('isAdmin')"

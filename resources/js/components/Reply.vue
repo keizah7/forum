@@ -19,8 +19,8 @@
                             <textarea class="form-control" v-model="body" required></textarea>
                         </div>
 
-                        <button class="btn btn-xs btn-primary">Update</button>
-                        <button class="btn btn-xs btn-link" @click="editing = false" type="button">Cancel</button>
+                        <button class="btn btn-sm btn-primary">Update</button>
+                        <button class="btn btn-sm btn-link" @click="editing = false" type="button">Cancel</button>
                     </form>
                 </div>
             </div>

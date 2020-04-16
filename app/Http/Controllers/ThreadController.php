@@ -72,23 +72,19 @@ class ThreadController extends Controller
      */
     public function store(Request $request, Recaptcha $recaptcha)
     {
-        $request->validate(
-            [
-                'title' => ['required', new SpamFree],
-                'body' => ['required', new SpamFree],
-                'channel_id' => 'required|exists:channels,id',
-                'g-recaptcha-response' => [$recaptcha],
-            ]
-        );
+        $request->validate([
+            'title' => ['required', new SpamFree],
+            'body' => ['required', new SpamFree],
+            'channel_id' => 'required|exists:channels,id',
+            'g-recaptcha-response' => [$recaptcha],
+        ]);
 
-        $thread = Thread::create(
-            [
-                'user_id' => auth()->id(),
-                'channel_id' => $request->channel_id,
-                'title' => $request->title,
-                'body' => $request->body,
-            ]
-        );
+        $thread = Thread::create([
+            'user_id' => auth()->id(),
+            'channel_id' => $request->channel_id,
+            'title' => $request->title,
+            'body' => $request->body,
+        ]);
 
         if (request()->wantsJson()) {
             return response($thread, 201);
