@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 Auth::routes(['verify' => true]);
 Route::get('/', fn () => view('welcome'));
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('threads/search', 'SearchController@show');
 
 Route::group(['prefix' => 'threads'], function () {
     Route::get('', 'ThreadController@index')->name('threads');
