@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Thread;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class LockThreadController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -20,7 +21,7 @@ class LockThreadController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -34,14 +35,14 @@ class LockThreadController extends Controller
      */
     public function store(Thread $thread)
     {
-        $thread->lock();
+        $thread->update(['locked' => true]);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(Thread $thread)
     {
@@ -52,7 +53,7 @@ class LockThreadController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(Thread $thread)
     {
@@ -64,7 +65,7 @@ class LockThreadController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, Thread $thread)
     {
@@ -72,13 +73,13 @@ class LockThreadController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Unlock the given thread.
      *
-     * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
+     * @param \App\Thread $thread
+     * @return void
      */
     public function destroy(Thread $thread)
     {
-        //
+        $thread->update(['locked' => false]);
     }
 }

@@ -46,6 +46,14 @@ class Thread extends Model
     protected $guarded = [];
     protected $with = ['creator', 'channel'];
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'locked' => 'boolean'
+    ];
+    /**
      * The accessors to append to the model's array form.
      *
      * @var array
@@ -61,14 +69,6 @@ class Thread extends Model
         });
     }
 
-    /**
-     * Lock the thread.
-     */
-    public function lock()
-    {
-        $this->update(['locked' => true]);
-    }
-    
     public function getRouteKeyName()
     {
         return 'slug';
