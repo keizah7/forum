@@ -35,6 +35,11 @@
             .ml-a {
                 margin-left: auto;
             }
+
+            .ais-highlight > em {
+                background: yellow;
+                font-style: normal;
+            }
         </style>
         <script>
             window.app = {!! json_encode([

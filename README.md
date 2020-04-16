@@ -16,7 +16,10 @@ This project is for educational porpuses only. Pull request are welcome! Thank y
 ## Installation
 `.env`
 ```
-RECAPTCHA_SECRET=fillReCaptchaV2CheckboxSecretKey
+RECAPTCHA_SECRET=(v2 checkbox)
+ALGOLIA_APP_ID=
+ALGOLIA_KEY=
+ALGOLIA_SECRET=
 ```
 Commands
 ```
@@ -29,6 +32,7 @@ php74
 cd forum
 npm install && npm run dev
 php artisan migrate:fresh --seed
+php artisan scout:import 'App\Thread'
 ```
 
 ### Authors
