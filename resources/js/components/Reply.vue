@@ -16,7 +16,7 @@
                 <div class="form-group">
                     <form @submit.prevent="update">
                         <div class="form-group">
-                            <textarea class="form-control" v-model="body" required></textarea>
+                            <wysiwyg v-model="body"></wysiwyg>
                         </div>
 
                         <button class="btn btn-sm btn-primary">Update</button>
