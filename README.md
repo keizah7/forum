@@ -6,8 +6,6 @@
 ![Watchers](https://img.shields.io/github/watchers/keizah7/forum?style=social)
 ![Contributors](https://img.shields.io/github/contributors/keizah7/forum)
 
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
-
 # Let's Build A Forum with Laravel and TDD
 
 ### Forum:
